@@ -45,8 +45,8 @@ const filterData = async (tripSearch: string) => {
         toDate === flight.depatureAt.split('T')[0],
     );
     return [
-      { trip1Id, firstWayTrips },
-      { trip2Id, secondWayTrips },
+      { trip1Id, firstWayTrips, fromCity, toCity },
+      { trip2Id, secondWayTrips, fromCity, toCity },
     ];
   }
   if (oneWay === 'true') {
