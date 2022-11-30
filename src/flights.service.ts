@@ -1,6 +1,5 @@
 import { Injectable, Query } from '@nestjs/common';
 import * as fs from 'fs';
-import { ConnectableObservable } from 'rxjs';
 
 interface IflightItinerary {
   flight_id: string;
@@ -63,7 +62,7 @@ const filterData = async (tripSearch: string) => {
       (flight: { depatureAt: string }) =>
         fromDate === flight.depatureAt.split('T')[0],
     );
-    return [{ trip1Id, firstWayTrips }];
+    return [{ trip1Id, firstWayTrips, fromCity, toCity }];
   }
 };
 
