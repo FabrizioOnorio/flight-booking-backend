@@ -79,7 +79,7 @@
       {
         "depatureAt": "2022-12-15T12:30:00",
         "arriveAt": "2022-12-15T13:30:00",
-        "avaliableSeats": 1,
+        "avaliableSeats": 0,
         "prices": [{ "currency": "SEK", "adult": 1500, "child": 325 }]
       },
       {
@@ -170,7 +170,7 @@
       {
         "depatureAt": "2022-12-12T11:00:00",
         "arriveAt": "2022-12-12T12:00:00",
-        "avaliableSeats": 5,
+        "avaliableSeats": 4,
         "prices": [{ "currency": "SEK", "adult": 1300, "child": 325 }]
       },
       {
