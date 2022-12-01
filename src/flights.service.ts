@@ -8,10 +8,19 @@ interface IflightItinerary {
   itineraries: [];
 }
 
-const getJson = () => {
+const sleep = (milliseconds: number) => {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+};
+
+const getJson = async () => {
   const data = fs.readFileSync('./src/data.json', 'utf8');
   const jsonData = JSON.parse(data);
-  return jsonData;
+  sleep(3000);
+  return await jsonData;
 };
 
 const filterData = async (tripSearch: string) => {
