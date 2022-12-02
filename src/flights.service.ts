@@ -1,5 +1,4 @@
 import { Body, Injectable, Query } from '@nestjs/common';
-import { request } from 'http';
 import filterData, { updateSeats } from './utils';
 
 export interface IRequestUpdate {

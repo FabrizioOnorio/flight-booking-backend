@@ -5,7 +5,6 @@ import { FlightsController } from './flights.controller';
 import { FlightsService } from './flights.service';
 
 @Module({
-  imports: [],
   controllers: [AppController, FlightsController],
   providers: [AppService, FlightsService],
 })

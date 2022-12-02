@@ -78,16 +78,16 @@ export const updateSeats = async (body: any) => {
   const parsedData = body;
   const flightOneDepartureCity = parsedData.bookedFlights[0].departureCity;
   const flightOneArrivalCity = parsedData.bookedFlights[0].arrivalCity;
-  const flightTwoDepartureCity = parsedData.bookedFlights[1].arrivalCity;
-  const flightTwoArrivalCity = parsedData.bookedFlights[1].departureCity;
+  const flightTwoDepartureCity = parsedData.bookedFlights[1]?.arrivalCity;
+  const flightTwoArrivalCity = parsedData.bookedFlights[1]?.departureCity;
   const flighOneDepartureAt = parsedData.bookedFlights[0].completeDate;
-  const flighTwoDepartureAt = parsedData.bookedFlights[1].completeDate;
+  const flighTwoDepartureAt = parsedData.bookedFlights[1]?.completeDate;
   const bookedSeatsFlightOne =
     parsedData.bookedFlights[0].adultsBooked +
     parsedData.bookedFlights[0].childrenBooked;
   const bookedSeatsFlightTwo =
-    parsedData.bookedFlights[1].adultsBooked +
-    parsedData.bookedFlights[1].childrenBooked;
+    parsedData.bookedFlights[1]?.adultsBooked +
+    parsedData.bookedFlights[1]?.childrenBooked;
   const data = fs.readFileSync('./src/data.json', 'utf8');
   const dbData = JSON.parse(data);
   const firstTripToUpdateIndex = dbData.findIndex(
@@ -100,31 +100,32 @@ export const updateSeats = async (body: any) => {
   ].itineraries.findIndex(
     (y: { depatureAt: string }) => y.depatureAt === flighOneDepartureAt,
   );
-  const secondTripToUpdateIndex = dbData.findIndex(
-    (x: { depatureDestination: string; arrivalDestination: string }) =>
-      flightTwoDepartureCity === x.depatureDestination &&
-      flightTwoArrivalCity === x.arrivalDestination,
-  );
-  const secondFlightItineraryindex = dbData[
-    secondTripToUpdateIndex
-  ].itineraries.findIndex(
-    (y: { depatureAt: string }) => y.depatureAt === flighTwoDepartureAt,
-  );
 
   const firstTripSeats =
     dbData[firstTripToUpdateIndex].itineraries[firstFlightItineraryindex]
       .avaliableSeats;
-  const secondTripSeats =
-    dbData[secondTripToUpdateIndex].itineraries[secondFlightItineraryindex]
-      .avaliableSeats;
-
   dbData[firstTripToUpdateIndex].itineraries[
     firstFlightItineraryindex
   ].avaliableSeats = firstTripSeats - bookedSeatsFlightOne;
-  dbData[secondTripToUpdateIndex].itineraries[
-    secondFlightItineraryindex
-  ].avaliableSeats = secondTripSeats - bookedSeatsFlightTwo;
 
+  if (parsedData.bookedFlights[1]) {
+    const secondTripToUpdateIndex = dbData.findIndex(
+      (x: { depatureDestination: string; arrivalDestination: string }) =>
+        flightTwoDepartureCity === x.depatureDestination &&
+        flightTwoArrivalCity === x.arrivalDestination,
+    );
+    const secondFlightItineraryindex = dbData[
+      secondTripToUpdateIndex
+    ].itineraries.findIndex(
+      (y: { depatureAt: string }) => y.depatureAt === flighTwoDepartureAt,
+    );
+    const secondTripSeats =
+      dbData[secondTripToUpdateIndex].itineraries[secondFlightItineraryindex]
+        .avaliableSeats;
+    dbData[secondTripToUpdateIndex].itineraries[
+      secondFlightItineraryindex
+    ].avaliableSeats = secondTripSeats - bookedSeatsFlightTwo;
+  }
   fs.writeFileSync('./src/data.json', JSON.stringify(dbData));
 };
 
